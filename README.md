@@ -19,9 +19,9 @@ Startup Sparkify has its new music streaming app running for months. In order to
 
 ## Technology
 
-Python 3.8
-psycopg2 2.9.5
-pandas 1.3.4
+- Python 3.8
+- psycopg2 2.9.5
+- pandas 1.3.4
 
 ## How to run the pipeline
 

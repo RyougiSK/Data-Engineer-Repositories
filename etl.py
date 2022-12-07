@@ -6,8 +6,11 @@ from sql_queries import *
 from datetime import datetime
 
 
-# Extract data from song file, load required data into song and artist table
 def process_song_file(cur, filepath):
+    """
+    This function is created to extract, transform and load song relevant data
+    """
+
     # open song file
     df = pd.read_json(filepath, lines=True)
 
@@ -21,8 +24,11 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 
-# Extract data from Log file, transform them into required format and load them into time, user, songplay table
 def process_log_file(cur, filepath):
+    """
+    This function is created to extract, transform and load log relevant data
+    """
+
     # open log file
     df = pd.read_json(filepath, lines=True)
 
@@ -71,8 +77,11 @@ def process_log_file(cur, filepath):
         cur.execute(songplay_table_insert, songplay_data)
 
 
-# Find all files in one filepath and process them
 def process_data(cur, conn, filepath, func):
+    """
+    This function is created to get all source data files and set process iteration for them
+    """
+
     # get all files matching extension from directory
     all_files = []
     for root, dirs, files in os.walk(filepath):
@@ -91,8 +100,11 @@ def process_data(cur, conn, filepath, func):
         print('{}/{} files processed.'.format(i, num_files))
 
 
-# The main function connect to DB, create a cursor and run the ETL step
 def main():
+    """
+    This function is created to connect to Databased and run the ETL process
+    """
+
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()
 
