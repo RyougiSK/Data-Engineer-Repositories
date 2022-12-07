@@ -6,6 +6,7 @@ from sql_queries import *
 from datetime import datetime
 
 
+# Extract data from song file, load required data into song and artist table
 def process_song_file(cur, filepath):
     # open song file
     df = pd.read_json(filepath, lines=True)
@@ -20,6 +21,7 @@ def process_song_file(cur, filepath):
     cur.execute(artist_table_insert, artist_data)
 
 
+# Extract data from Log file, transform them into required format and load them into time, user, songplay table
 def process_log_file(cur, filepath):
     # open log file
     df = pd.read_json(filepath, lines=True)
@@ -31,13 +33,16 @@ def process_log_file(cur, filepath):
     t = df
     t['ts'] = t['ts'].apply(lambda x: x / 1000).apply(datetime.fromtimestamp)
 
-    # insert time data records
+    # Choose required data and create a tuple of label for them
     time_data = (t['ts'].dt.date, t['ts'].dt.hour, t['ts'].dt.day, t['ts'].dt.weekofyear,
                  t['ts'].dt.month, t['ts'].dt.year, t['ts'].dt.weekday)
     column_labels = ('date', 'hour', 'day', 'weekofyear', 'month', 'year', 'weekday')
+
+    # Combine data and their label, transform them into a Data Frame
     time_dictionary = dict(zip(column_labels, time_data))
     time_df = pd.DataFrame(time_dictionary)
 
+    # insert time data records
     for i, row in time_df.iterrows():
         cur.execute(time_table_insert, (row.date, row.hour, row.day, row.weekofyear, row.month, row.year, row.weekday))
 
@@ -62,10 +67,11 @@ def process_log_file(cur, filepath):
 
         # insert songplay record
         songplay_data = (
-        index, row.ts, int(row.userId), row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
+        row.ts, int(row.userId), row.level, songid, artistid, row.sessionId, row.location, row.userAgent)
         cur.execute(songplay_table_insert, songplay_data)
 
 
+# Find all files in one filepath and process them
 def process_data(cur, conn, filepath, func):
     # get all files matching extension from directory
     all_files = []
@@ -85,6 +91,7 @@ def process_data(cur, conn, filepath, func):
         print('{}/{} files processed.'.format(i, num_files))
 
 
+# The main function connect to DB, create a cursor and run the ETL step
 def main():
     conn = psycopg2.connect("host=127.0.0.1 dbname=sparkifydb user=student password=student")
     cur = conn.cursor()

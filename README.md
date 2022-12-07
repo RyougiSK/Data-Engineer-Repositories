@@ -4,6 +4,7 @@
 ## Table of content
 
 - Introduction
+- Technology
 - How to run the pipeline
 - File structure
 - Database schema design
@@ -15,6 +16,12 @@
 
 Startup Sparkify has its new music streaming app running for months. In order to provides better user experience to challenge the existing competitor Sportify, the analytics team is particularly interested in understanding what songs users are listening to. This project is aiming to build a databased which provides solid data stream for the analytical team.
 
+
+## Technology
+
+Python 3.8
+psycopg2 2.9.5
+pandas 1.3.4
 
 ## How to run the pipeline
 
@@ -29,10 +36,10 @@ Startup Sparkify has its new music streaming app running for months. In order to
 - Assets folder contains all relevant pictures, images, video and other materials used in the project
 - data folder stores all music and play logs files in JSON formate. Music files are partitioned by the first three letters of each song's track ID. Log files are partitioned by year and month
 - test.ipynb displays the first few rows of each table to let you check your database
-- create_tables.py drops and creates your tables. You run this file to reset your tables before each time you run your ETL scripts
-- etl.ipynb reads and processes a single file from song_data and log_data and loads the data into your tables. This notebook contains detailed instructions on the ETL process for each of the tables
-- etl.py reads and processes files from song_data and log_data and loads them into your tables. You can fill this out based on your work in the ETL notebook
-- sql_queries.py contains all your sql queries, and is imported into the last three files above
+- create_tables.py drops and creates your tables
+- etl.ipynb reads and processes a single file from song_data and log_data and loads the data into your tables
+- etl.py reads and processes files from song_data and log_data and loads them into your tables
+- sql_queries.py contains all your sql queries
 - README.md provides discussion on your project
 
 
@@ -54,7 +61,7 @@ The schema has one measure table songplays and four dimension table time, user, 
 7. Inserting all the time related data into time table
 8. Inserting userId, firstName, lastName, gender, level into user table
 9. Joining song table and artist table to get song_id and artist_id
-10. Inserting id, timestamp, userId, level, songid, artistid, sessionId, location, userAgent
+10. Inserting id, tiemstamp, userId, level, songid, artistid, sessionId, location, userAgent
 
 
 ## Maintainer
